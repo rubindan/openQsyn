@@ -23,13 +23,13 @@ switch flag
     case 1
         obj = s;
     case 2 
-        obj = 1/(s+a);
+        obj = 1/(s/a+1);
     case 3
-        obj = 1/(s^2+a);
+        obj = 1/(s^2/a^2+2*b*s/a+1);
     case 4
-        obj = s^2+a;
+        obj = s^2/a^2+2*b*s/a+1;
     case 5
-        obj = s+a;
+        obj = s/a+1;
     case 6
         obj = (c*s+d)/(a*s+b);
 end

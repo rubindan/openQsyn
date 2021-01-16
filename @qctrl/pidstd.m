@@ -1,4 +1,4 @@
-function obj = pidstd(K,Ti, Td, N)
+function obj = pidstd(kp,Ti, Td, N)
 %pid returns a qctrl pid compensator
 %
 % Usage:
@@ -10,11 +10,16 @@ function obj = pidstd(K,Ti, Td, N)
 %                Ti*s    (Td/N)*s+1
 %
 % K: gain
+% cpid = qctrl.pidstd(Ti, Td, N)  returns a standard pid compensator,
+% based on the input values.
+% the inputs are:
 % Ti: Integrator time
 % Td: Derivative time
 % N: Derivative filter divisor
 
-kp_f = K;
+
+
+kp_f = kp;
 Ti_f = Ti;
 Td_f = Td;
 N_f = N;

@@ -14,7 +14,17 @@ fullpath=mfilename('fullpath');
 homepath=fullpath(1:end-9);
 addpath([homepath,'utilities'])
 addpath(genpath([homepath,'doc']))
+addpath([homepath,'loopShapingGUI']);
 
-builddocsearchdb([homepath,'\doc\html'])
+if ismac
+    builddocsearchdb([homepath,'/doc/html'])
+elseif isunix
+    builddocsearchdb([homepath,'/doc/html'])
+elseif ispc
+    builddocsearchdb([homepath,'\doc\html'])
+else
+    disp('Platform not supported')
+end
+
 
 end

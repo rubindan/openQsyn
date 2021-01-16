@@ -1,0 +1,132 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Loop-shaping GUI</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-06-13"><meta name="DC.source" content="doc_Main_screen.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Loop-shaping GUI</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#2">Controller</a></li><li><a href="#4">Controller Poles and zeros</a></li><li><a href="#7">Options</a></li></ul></div><h2 id="1">Overview</h2><p>Quantitative Feedback Theory (QFT) is a frequency domain robust control design technique, introduced by Isaac Horowitz. Open Qsyn is a Matlab based, object-oriented toolbox to aid QFT control synthesis.</p><p>Loop-shaping is the process in which a feedback controller is designed, in order to transform the output of the regulated system to have desired characteristics. The design process requires to make a wise use in known compensation networks, such that cascading them with the plant will yield the intended output. To make the design process easier, This graphical user interface (GUI) was developed.</p><p>This GUI is structured to accommodate all the needs of a control engineer that wants to perform loop shaping, and is developed according to a consensus of six steps of controllers design via the QFT method.</p><h2 id="2">Controller</h2><div><ul><li>PID &#8211; opens a submenu for a PID controller design</li></ul></div><div><ul><li>Gain &#8211; opens a submenu for a gain addition</li></ul></div><div><ul><li>Lead &#8211; opens a submenu for a Lead compensator design</li></ul></div><div><ul><li>Lag &#8211; opens a submenu for a Lag compensator design</li></ul></div><div><ul><li>Add Poles/Zeros &#8211; opens a submenu for a manual addition of poles and zeros</li></ul></div><div><ul><li>Notch/anti Notch &#8211; opens a submenu for a notch/anti notch filter design</li></ul></div><div><ul><li>Reset Controller &#8211; Resets the designed controller</li></ul></div><div><ul><li>Edit &#8211; enables a manual editing of the chosen controller from the controller's list</li></ul></div><div><ul><li>Delete &#8211; deletes the chosen controller from the controller's list</li></ul></div><h2 id="4">Controller Poles and zeros</h2><p>Shows the poles and zeros of the designed controller.</p><div><ul><li>Drag poles and zeros &#8211; enables the user to drag the poles and zeros of the controller</li><li>Nichols/Bode &#8211; shows the response of the regulated system (QFT controller + plant)</li><li>Nichols plot &#8211; displays the relation between the magnitude and phase of the regulated system.</li><li>Closed Loop Bode &#8211; displays the magnitude of the closed loop system</li><li>Open Loop Bode &#8211; displays the magnitude and phase of the open loop system</li></ul></div><h2 id="7">Options</h2><div><ul><li>Save Controller to workspace</li><li>Discrete design &#8211; converts an existing analog controller to a discrete form</li><li>Load plant from workspace</li><li>Save controller to workspace</li><li>Load controller from workspace</li><li>Cancel &#8211; closes the GUI</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Loop-shaping GUI
+%% Overview
+% Quantitative Feedback Theory (QFT) is a frequency domain robust control
+% design technique, introduced by Isaac Horowitz. Open Qsyn is a Matlab based,
+% object-oriented toolbox to aid QFT control synthesis.
+% 
+% Loop-shaping is the process in which a feedback controller is designed,
+% in order to transform the output of the regulated system to have desired
+% characteristics. The design process requires to make a wise use in known
+% compensation networks, such that cascading them with the plant will yield
+% the intended output. To make the design process easier, This graphical user
+% interface (GUI) was developed.
+%
+% This GUI is structured to accommodate all the needs of a control engineer
+% that wants to perform loop shaping, and is developed according to a 
+% consensus of six steps of controllers design via the QFT method.
+
+%% Controller
+%%
+%
+% *     PID – opens a submenu for a PID controller design 
+% 
+% *     Gain – opens a submenu for a gain addition 
+% 
+% *     Lead – opens a submenu for a Lead compensator design
+% 
+% *     Lag – opens a submenu for a Lag compensator design
+% 
+% * 	Add Poles/Zeros – opens a submenu for a manual addition of poles and zeros 
+% 
+% *     Notch/anti Notch – opens a submenu for a notch/anti notch filter design
+% 
+% * 	Reset Controller – Resets the designed controller 
+% 
+% * 	Edit – enables a manual editing of the chosen controller from the
+% controller's list
+% 
+% * 	Delete – deletes the chosen controller from the controller's list
+
+%%     Controller Poles and zeros
+%%
+%
+% Shows the poles and zeros of the designed controller.
+%%
+% *     Drag poles and zeros – enables the user to drag the poles and zeros of the controller
+% *     Nichols/Bode – shows the response of the regulated system (QFT controller + plant)
+% * 	Nichols plot – displays the relation between the magnitude and phase of the regulated system.
+% * 	Closed Loop Bode – displays the magnitude of the closed loop system
+% * 	Open Loop Bode – displays the magnitude and phase of the open loop system
+
+%%      Options
+%%
+%
+% * 	Save Controller to workspace 
+% * 	Discrete design – converts an existing analog controller to a discrete form
+% *     Load plant from workspace
+% * 	Save controller to workspace
+% * 	Load controller from workspace
+% * 	Cancel – closes the GUI 
+
+##### SOURCE END #####
+--></body></html>

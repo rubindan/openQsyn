@@ -1,5 +1,5 @@
 classdef qdesign  < handle
-    %QDESIGN is a class for QFT Loop Design -- A class that hosts all 
+    %QDESIGN is a class for QFT Loop Design -- A class that hosts all
     %methods required for SISO QFT loop shaping design
     
     properties
@@ -13,37 +13,37 @@ classdef qdesign  < handle
     methods
         function obj = qdesign(plant,specs)
             %QDESIGN Construct an instance of the QDESIGN class
-            %   
-            %Usage: 
+            %
+            %Usage:
             %
             %    obj = QDESIGN(plant,specs)    constract a QDESIGN object
             %    from given qplant and qspc
             %
-            %Part of the Open Qsyn toolbox. 
+            %Part of the Open Qsyn toolbox.
             
             obj.tpl = plant.templates;
             obj.nom = plant.nominal;
             obj.spc = specs;
             obj.col = lines(length(obj.tpl)); % preserves color for each freq
-            disp(['You now have a QFT loop desgin object. ',... 
-                 'Compute bounds using CBND'])
+            disp(['You now have a QFT loop desgin object. ',...
+                'Compute bounds using CBND'])
         end
         function [] = clmag(obj,C,F)
             %CLMAG computes closed loop magnitude response
             %
-            %Usage: 
+            %Usage:
             %
             %   CLMAG(DES,C,F)   shows magniatude response for P*C*F/(1+C*P)
-            %   with feedback C and pre-filter F. 
-            %   
+            %   with feedback C and pre-filter F.
+            %
             %Inputs:
             %
-            %   DES     qdesign object 
+            %   DES     qdesign object
             %
-            %   C       feedback compensator given as a openQsyn QFR or QCTRL object, 
-            %           a Control System Toolbox LTI object, or a constant gain. Default C=1. 
+            %   C       feedback compensator given as a openQsyn QFR or QCTRL object,
+            %           a Control System Toolbox LTI object, or a constant gain. Default C=1.
             %
-            %   F       prefilter in given as a openQsyn QFR or QCTRL object, 
+            %   F       prefilter in given as a openQsyn QFR or QCTRL object,
             %           a Control System Toolbox LTI object, or a constant gain. Default F=1.
             %
             %   Replaces Qsyn command FDESIGN
@@ -64,7 +64,7 @@ classdef qdesign  < handle
             %if isnumeric(C), C=tf(C); end
             %if isnumeric(F), F=tf(F); end
             
-
+            
             % compute nominal
             %wnom = obj.nom.frequency;
             %Cwnom = squeeze(freqresp(C,wnom)); % in complex plain
@@ -88,32 +88,36 @@ classdef qdesign  < handle
             Tr = cpop( Tu,F,'*');
             
             [mag,~,w] = Tr.bode([]);
-            mag_min = min(mag');
-            mag_max = max(mag');
-            scatter(w,mag_min,'bo')
-            scatter(w,mag_max,'bo')
+            for i = 1 : length(mag)
+                mag_min(i) = min(mag(i));
+                mag_max(i) = max(mag(i));
+            end
+            fprintf('mag length = %.3f, w length = %.3f',length(mag'),length(w));
+            N = min(length(mag'),length(w));
+            scatter(w(1:N),mag_min(1:N),'bo')
+            scatter(w(1:N),mag_max(1:N),'bo')
         end
         function varargout = loopnic(obj,C)
             %LOOPNIC plots the open-loop on a Nichols chart
             %
-            %Usage: 
+            %Usage:
             %
-            %   LOOPNIC(DES,C)   plots the nominal open-loop Nichols for a 
-            %   given qdesign object DES, and a feedback compensator C 
+            %   LOOPNIC(DES,C)   plots the nominal open-loop Nichols for a
+            %   given qdesign object DES, and a feedback compensator C
             %
             %   h = LOOPNIC(DES,C)   also outputs a figure handle
             %
             %Inputs:
             %
-            %   des     qdesign object with computed bounds 
+            %   des     qdesign object with computed bounds
             %
-            %   C       feedback compensator given as a openQsyn QFR or QCTRL object, 
-            %           a Control System Toolbox LTI object, or a constant real gain.  
+            %   C       feedback compensator given as a openQsyn QFR or QCTRL object,
+            %           a Control System Toolbox LTI object, or a constant real gain.
             %
-             
+            
             % defaults
-            linecolor = 'k'; 
-            %t_color = distinguishable_colors(length(obj.tpl)); 
+            linecolor = 'k';
+            %t_color = distinguishable_colors(length(obj.tpl));
             t_color = obj.col;
             hold on
             
@@ -128,12 +132,12 @@ classdef qdesign  < handle
             for k=1:length(obj.tpl)
                 tk = qfr(obj.tpl(k).template(1),obj.tpl(k).frequency);
                 Ltpl = series(tk,C);
-                [~,w_i] = min(abs(tk.frequency-Lnom.frequency)); %** fix phase shift issues 
-                phase_dist = real(Ltpl.response) - real(Lnom.response(w_i)); 
+                [~,w_i] = min(abs(tk.frequency-Lnom.frequency)); %** fix phase shift issues
+                phase_dist = real(Ltpl.response) - real(Lnom.response(w_i));
                 n_r = floor((abs(phase_dist)+5)/360)*sign(phase_dist);
-                Ltpl.response =  Ltpl.response-n_r*360; %*** 
+                Ltpl.response =  Ltpl.response-n_r*360; %***
                 h(end+1) = show(Ltpl,'marker','square',...
-                     'markeredgecolor','k','markerfacecolor',t_color(k,:));
+                    'markeredgecolor','k','markerfacecolor',t_color(k,:));
                 text(real(Ltpl.response),imag(Ltpl.response),...
                     sprintf(' %g',obj.tpl(k).frequency),'clipping','on') % single space added
             end
